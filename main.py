@@ -62,7 +62,7 @@ def main_loop():
                 i = 0
         if next == " " and i > 0:
             i -= 1
-        if next == "b":
+        if next == "q":
             return
 
 main_loop()
