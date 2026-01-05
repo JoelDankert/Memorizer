@@ -1,7 +1,10 @@
 import os
+import sys
+import termios
+import tty
 
 def first_letters(line,empty=0):
-    if empty == 2:
+    if empty == 3:
         return " "*len(line)
     newline = ""
     excluded_chars = " -,.!?–\"\'&@…_()<>[]{}"
@@ -9,7 +12,13 @@ def first_letters(line,empty=0):
         if ch == " ":
             newline += ch
 
-        elif empty == 1:
+        elif empty == 2: # empty 1
+            newline += "■"
+
+        elif ch in excluded_chars:
+            newline += ch
+
+        elif empty == 1: # empty 2
             newline += "■"
 
         elif i == 0:
@@ -18,10 +27,7 @@ def first_letters(line,empty=0):
         elif line[i-1] in excluded_chars:
             newline += ch
 
-        elif ch in excluded_chars:
-            newline += ch
-
-        else:
+        else: # rest
             newline += "■"
 
         
@@ -42,23 +48,35 @@ with open(f"texts/{filename}","r") as f:
 
 lines = improve_lines(lines)
 
+def read_key():
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
+    try:
+        tty.setraw(fd)
+        return sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
 def main_loop():
     i = 0;
+    stages = 4
     while 1:
         os.system("clear")
-        pos = int(i//3)
-        if i % 3 == 0:
+        pos = int(i//stages)
+        if i % stages == 0:
+            print(first_letters(lines[pos],2))
+        if i % stages == 1:
             print(first_letters(lines[pos],1))
-        if i % 3 == 1:
+        if i % stages == 2:
             print(first_letters(lines[pos],0))
-        elif i % 3 == 2:
+        elif i % stages == 3:
             print(lines[pos])
 
-        next = input();
+        next = read_key()
 
-        if next == "":
+        if next in ("\n", "\r"):
             i += 1
-            if i >= len(lines)*2:
+            if i >= len(lines)*stages:
                 i = 0
         if next == " " and i > 0:
             i -= 1
@@ -66,5 +84,4 @@ def main_loop():
             return
 
 main_loop()
-
 
