@@ -59,17 +59,15 @@ def read_key():
 
 def main_loop():
     i = 0;
-    stages = 4
+    stages = 3
     while 1:
         os.system("clear")
         pos = int(i//stages)
         if i % stages == 0:
-            print(first_letters(lines[pos],2))
-        if i % stages == 1:
             print(first_letters(lines[pos],1))
-        if i % stages == 2:
+        if i % stages == 1:
             print(first_letters(lines[pos],0))
-        elif i % stages == 3:
+        elif i % stages == 2:
             print(lines[pos])
 
         next = read_key()
