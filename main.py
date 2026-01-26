@@ -63,12 +63,18 @@ def main_loop():
     while 1:
         os.system("clear")
         pos = int(i//stages)
+        total_steps = len(lines) * stages
+        progress = int(((i + 1) / total_steps) * 100)
+        red = int(255 * (100 - progress) / 100)
+        green = int(255 * progress / 100)
+        color = f"\033[38;2;{red};{green};0m"
+        print(f"{color}{progress}%\033[0m")
         if i % stages == 0:
-            print(first_letters(lines[pos],1))
-        if i % stages == 1:
+            print(lines[pos])
+        elif i % stages == 1:
             print(first_letters(lines[pos],0))
         elif i % stages == 2:
-            print(lines[pos])
+            print(first_letters(lines[pos],1))
 
         next = read_key()
 
@@ -82,4 +88,3 @@ def main_loop():
             return
 
 main_loop()
-
