@@ -7,7 +7,7 @@ def first_letters(line,empty=0):
     if empty == 3:
         return " "*len(line)
     newline = ""
-    excluded_chars = " -,.!?–\"\'&@…_()<>[]{}0123456789"
+    excluded_chars = " -,.!?–—\"\'&@…_()<>[]{}0123456789"
     for i,ch in enumerate(line):
         if ch == " ":
             newline += ch
